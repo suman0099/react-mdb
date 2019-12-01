@@ -2,8 +2,12 @@ import React from "react";
 
 import "./LoadMoreBtn.css";
 
-const LoadMore = props => {
-    return <div>Load More</div>;
+const LoadMoreBtn = props => {
+    return (
+        <div className="rmdb-loadmorebtn" onClick={props.onClick}>
+            <p>{props.text}</p>
+        </div>
+    );
 };
 
-export default LoadMore;
+export default LoadMoreBtn;

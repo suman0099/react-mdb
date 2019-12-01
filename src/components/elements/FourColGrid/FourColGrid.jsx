@@ -1,6 +1,5 @@
 import React from "react";
-
-import "./FourColGrid";
+import "./FourColGrid.css";
 
 const FourColGrid = props => {
     const renderElements = () => {
@@ -11,7 +10,6 @@ const FourColGrid = props => {
                 </div>
             );
         });
-
         return gridElements;
     };
 

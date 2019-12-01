@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {
     API_URL,
     API_KEY,
@@ -32,6 +31,7 @@ class Home extends Component {
     }
 
     searchItems = searchTerm => {
+        console.log(searchTerm);
         let endpoint = "";
         this.setState({
             movies: [],
@@ -44,18 +44,16 @@ class Home extends Component {
         } else {
             endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`;
         }
-
         this.fetchItems(endpoint);
     };
 
     loadMoreItems = () => {
         let endpoint = "";
-        this.state({ loading: true });
+        this.setState({ loading: true });
 
         if (this.state.searchTerm === "") {
-            //Not searching anything so get the most popular movies
-            //prettier-ignore
-            endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state.currentPage + 1}`
+            endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this
+                .state.currentPage + 1}`;
         } else {
             endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${
                 this.state.searchTerm
@@ -66,16 +64,17 @@ class Home extends Component {
 
     fetchItems = endpoint => {
         fetch(endpoint)
-            .then(result => result.json()) // convert raw data to json
+            .then(result => result.json())
             .then(result => {
                 this.setState({
-                    movies: [...this.state.movies, ...result],
+                    movies: [...this.state.movies, ...result.results],
                     heroImage: this.state.heroImage || result.results[0],
                     loading: false,
                     currentPage: result.page,
-                    totalPages: result.totalPages
+                    totalPages: result.total_pages
                 });
-            });
+            })
+            .catch(error => console.error("Error:", error));
     };
 
     render() {
@@ -108,7 +107,7 @@ class Home extends Component {
                                     image={
                                         element.poster_path
                                             ? `${IMAGE_BASE_URL}${POSTER_SIZE}${element.poster_path}`
-                                            : `./images/no_image.jpg`
+                                            : "./images/no_image.jpg"
                                     }
                                     movieId={element.id}
                                     movieName={element.original_title}
